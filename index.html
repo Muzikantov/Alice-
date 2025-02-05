@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Для Алисоу</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                45deg,
+                #0a0012,
+                #1a0525,
+                #2E0854,
+                #1a0525
+            );
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+            position: relative;
+        }
+
+        /* Параллакс-слои */
+        .parallax-layer {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            pointer-events: none;
+            animation: parallaxMove 40s linear infinite;
+            opacity: 0.15;
+        }
+
+        .layer1 {
+            background: radial-gradient(circle, rgba(255,60,121,0.1) 0%, transparent 50%);
+            animation-duration: 50s;
+        }
+
+        .layer2 {
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 50px,
+                rgba(255,107,219,0.05) 50px,
+                rgba(255,107,219,0.05) 100px
+            );
+            animation-duration: 30s;
+        }
+
+        /* Световые блики */
+        .light-glare {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+            animation: glareMove 12s linear infinite;
+            filter: blur(30px);
+        }
+
+        @keyframes parallaxMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        @keyframes glareMove {
+            0% { transform: translate(-50%, -50%); }
+            50% { transform: translate(50%, 50%); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        .text {
+            position: absolute;
+            color: #ffffff;
+            font-size: 1.8rem;
+            opacity: 0;
+            transition: opacity 1s;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            max-width: 80%;
+            word-wrap: break-word;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-weight: 400;
+            line-height: 1.5;
+            z-index: 2;
+        }
+
+        .heart {
+            position: absolute;
+            color: #c13dff;
+            font-size: 14px;
+            animation: float 6s linear infinite;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .instruction {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            font-size: 1.5rem;
+            transition: opacity 2s;
+            width: 80%;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translate(100px, -100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Параллакс-слои -->
+    <div class="parallax-layer layer1"></div>
+    <div class="parallax-layer layer2"></div>
+    
+    <!-- Световые блики -->
+    <div class="light-glare" style="top:20%; left:30%"></div>
+    <div class="light-glare" style="top:70%; left:60%"></div>
+
+    <div class="instruction">Жми где угодно</div>
+
+    <script>
+        const phrases = [
+            "Бубубу",
+            "Тралалейла",
+            "Тралала",
+            "Хочу сказать тебе",
+            "Ты самая лучшая",
+            "Больше сказать я не могу",
+            "Ибо получу по шее от тебя",
+            "Жми если я гандонио",
+            "😊" // Улыбающийся смайлик
+        ];
+
+        let currentPhrase = 0;
+        const instruction = document.querySelector('.instruction');
+
+        // Создание фоновых элементов
+        function createBackground() {
+            // Сердца
+            setInterval(() => {
+                for(let i = 0; i < 3; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '100vh';
+                    heart.innerHTML = '❤';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 6000);
+                }
+            }, 500);
+
+            // Звёзды
+            const starsCount = Math.floor(window.innerWidth * 0.5);
+            for(let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(star);
+            }
+        }
+
+        // Показ текста
+        function showText(e) {
+            const touch = e.touches ? e.touches[0] : e;
+            const x = touch.clientX;
+            const y = touch.clientY;
+
+            if(!x || !y) return;
+            
+            instruction.style.opacity = '0';
+            
+            if(currentPhrase < phrases.length) {
+                const text = document.createElement('div');
+                text.className = 'text';
+                text.style.left = x + 'px';
+                text.style.top = y + 'px';
+                text.textContent = phrases[currentPhrase];
+                
+                document.body.appendChild(text);
+                
+                setTimeout(() => text.style.opacity = '1', 10);
+                setTimeout(() => {
+                    text.style.opacity = '0';
+                    setTimeout(() => text.remove(), 1000);
+                }, 2000);
+
+                currentPhrase++;
+            }
+
+            if(currentPhrase >= phrases.length) {
+                createFinalHeart();
+                document.body.removeEventListener('click', showText);
+                document.body.removeEventListener('touchstart', showText);
+            }
+        }
+
+        // Финальное сердце из частиц
+        function createFinalHeart() {
+            const particles = [];
+            for(let i = 0; i < 300; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                particle.style.transform = `translate(${Math.random() * 200 - 100}vw, ${Math.random() * 200 - 100}vh)`;
+                particle.style.opacity = '1';
+                document.body.appendChild(particle);
+                particles.push(particle);
+            }
+
+            setTimeout(() => {
+                particles.forEach(p => p.remove());
+            }, 2000);
+        }
+
+        // Инициализация
+        createBackground();
+        document.body.addEventListener('click', showText);
+        document.body.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            showText(e);
+        }, { passive: false });
+    </script>
+</body>
+</html>
